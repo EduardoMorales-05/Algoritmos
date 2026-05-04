@@ -13,9 +13,9 @@ public class QueueArray<E> implements Queue<E> {
     @SuppressWarnings("unchecked")
     public QueueArray(int n) {
         this.array = (E[]) new Object[n];
-        this.front = 0;[cite: 1]
-        this.rear = -1;[cite: 1]
-        this.size = 0;[cite: 1]
+        this.front = 0;
+        this.rear = -1;
+        this.size = 0;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class QueueArray<E> implements Queue<E> {
         E element = array[front];
         array[front] = null; // Ayuda al recolector de basura 
         // Incremento circular del índice frontal
-        front = (front + 1) % array.length;[cite: 1]
+        front = (front + 1) % array.length;
         size--;
         return element;
     }
