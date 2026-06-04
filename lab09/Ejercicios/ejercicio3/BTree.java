@@ -1,5 +1,3 @@
-package btree;
-
 public class BTree<E extends Comparable<E>> {
 	private BNode<E> root;
 	private int orden;
@@ -211,5 +209,63 @@ private boolean search(BNode<E> current, E cl)
 
     return search(current.childs.get(pos[0]), cl);
 }
+public void searchRange(E min, E max)
+{
+    if(min.compareTo(max) > 0)
+    {
+        System.out.println("Rango inválido");
+        return;
+    }
+
+    searchRange(root, min, max);
+
+    System.out.println();
+}
+private void searchRange(BNode<E> current, E min, E max)
+{
+    if(current == null)
+        return;
+
+    int i;
+
+    for(i = 0; i < current.count; i++)
+    {
+        E key = current.keys.get(i);
+
+        if(key.compareTo(min) > 0)
+        {
+            searchRange(current.childs.get(i), min, max);
+        }
+
+        if(key.compareTo(min) >= 0 &&
+           key.compareTo(max) <= 0)
+        {
+            System.out.print(key + " ");
+        }
+
+        if(key.compareTo(max) > 0)
+            return;
+    }
+
+    searchRange(current.childs.get(current.count), min, max);
+}
+    public void remove(E key) {
+        if (root == null) {
+            System.out.println("El árbol está vacío.");
+            return;
+        }
+
+        root.remove(key, orden);
+
+        // Si la raíz quedó vacía tras una fusión, su único hijo pasa a ser la nueva raíz
+        if (root.count == 0) {
+            if (root.childs.get(0) == null) {
+                root = null;
+            } else {
+                root = root.childs.get(0);
+                root.parent = null;
+            }
+        }
+    }
 
 }

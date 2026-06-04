@@ -1,5 +1,3 @@
-package btree;
-
 public class BTree<E extends Comparable<E>> {
 	private BNode<E> root;
 	private int orden;
@@ -211,5 +209,84 @@ private boolean search(BNode<E> current, E cl)
 
     return search(current.childs.get(pos[0]), cl);
 }
+public void searchRange(E min, E max)
+{
+    if(min.compareTo(max) > 0)
+    {
+        System.out.println("Rango inválido");
+        return;
+    }
 
+    searchRange(root, min, max);
+
+    System.out.println();
+}
+private void searchRange(BNode<E> current, E min, E max)
+{
+    if(current == null)
+        return;
+
+    int i;
+
+    for(i = 0; i < current.count; i++)
+    {
+        E key = current.keys.get(i);
+
+        if(key.compareTo(min) > 0)
+        {
+            searchRange(current.childs.get(i), min, max);
+        }
+
+        if(key.compareTo(min) >= 0 &&
+           key.compareTo(max) <= 0)
+        {
+            System.out.print(key + " ");
+        }
+
+        if(key.compareTo(max) > 0)
+            return;
+    }
+
+    searchRange(current.childs.get(current.count), min, max);
+}
+private boolean isLeaf(BNode<E> node)
+{
+    return node.childs.get(0) == null;
+}
+private BNode<E> searchNodeForDelete(BNode<E> current, E key, int[] pos)
+{
+    if(current == null)
+        return null;
+
+    boolean found = current.searchNode(key, pos);
+
+    if(found)
+        return current;
+
+    return searchNodeForDelete(
+        current.childs.get(pos[0]),
+        key,
+        pos
+    );
+}
+private void removeFromLeaf(BNode<E> node,
+                            int pos)
+{
+    for(int i = pos;
+        i < node.count - 1;
+        i++)
+    {
+        node.keys.set(i,
+                      node.keys.get(i + 1));
+    }
+
+    node.keys.set(node.count - 1,
+                  null);
+
+    node.count--;
+
+    System.out.println(
+        "Clave eliminada correctamente"
+    );
+}
 }

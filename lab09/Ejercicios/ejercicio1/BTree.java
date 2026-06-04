@@ -1,5 +1,3 @@
-package btree;
-
 public class BTree<E extends Comparable<E>> {
 	private BNode<E> root;
 	private int orden;
